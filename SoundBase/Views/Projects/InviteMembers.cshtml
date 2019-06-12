@@ -1,0 +1,33 @@
+﻿@model SoundBase.Models.InviteUserViewModel
+
+@{
+    ViewData["Title"] = "InviteMembers";
+}
+
+<partial name="_sideBar" />
+
+<div class="projectContainer">
+    <partial name="_ProjectTopBar" />
+    <div class="memberCardContainer">
+        @foreach (var user in Model.Users)
+        {
+            <div class="memberCard">
+                <div class="memberCardInfo">
+                    <div class="memberCardName">
+                        @user.FirstName @user.LastName
+                    </div>
+                </div>
+                <div class="memberCardButtons">
+                    <form asp-action="InviteMembers">
+                        <input type="hidden" asp-for="ProjectId" />
+                        <input type="hidden" asp-for="UserId" value="@user.Id" />
+                            <button type="submit" value="Send" class="submitButton inviteButton">
+                                Invite <i class="fa fa-paper-plane fa-lg"></i>
+                            </button>
+                    </form>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

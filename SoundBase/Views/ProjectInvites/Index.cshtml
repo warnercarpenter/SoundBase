@@ -1,0 +1,46 @@
+﻿@model IEnumerable<SoundBase.Models.ProjectInvite>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div class="inviteContainer">
+    @foreach (var invite in Model)
+    {
+        <div class="inviteCard">
+            <div class="inviteCardContents">
+                <div class="projectTopBarContents">
+                    @if (invite.Project.ImagePath != null)
+                    {
+                        <img src="/images/@invite.Project.ImagePath" width="60" height="60" />
+                    }
+                    <div class="projectTopBarText">
+                        <div class="projectTopBarArtistName">
+                            @invite.Project.ArtistName
+                        </div>
+                        <div class="projectTopBarTitle">
+                            @invite.Project.Title
+                        </div>
+                    </div>
+                </div>
+                <div class="inviteNameDate">Invited by <strong>@invite.Sender.FirstName @invite.Sender.LastName</strong> on @invite.DateInvited.ToString("MMMM d, hh:mm tt")</div>
+            </div>
+            <div class="inviteButtonHolder">
+                <div class="acceptDeclineButtons">
+                    <a asp-action="AcceptInvite" asp-route-id="@invite.ProjectInviteId" class="submitButton">
+                        <i class="zoomIcon fa fa-check-circle fa-2x"></i>
+                    </a>
+                    <a asp-action="DeclineInvite" asp-route-id="@invite.ProjectInviteId" class="submitButton">
+                        <i class="zoomIcon fa fa-times-circle fa-2x"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>

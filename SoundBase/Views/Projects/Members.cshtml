@@ -1,4 +1,4 @@
-﻿@model IEnumerable<SoundBase.Models.ProjectUser>
+﻿@model SoundBase.Models.Project
 
 @{
     ViewData["Title"] = "Members";
@@ -8,4 +8,24 @@
 
 <div class="projectContainer">
     <partial name="_ProjectTopBar" />
+    <a class="wideButton" asp-action="InviteMembers" asp-route-id="@ViewBag.ProjectId">Invite Members</a>
+    <div class="memberCardContainer">
+        @foreach (ProjectUser projectUser in Model.ProjectUsers)
+        {
+            <div class="memberCard">
+                <div class="memberCardInfo">
+                    <div class="memberCardName">
+                        @projectUser.User.FirstName @projectUser.User.LastName
+                        @if (projectUser.IsAdmin)
+                        {
+                            <span class="icon fas fa-user-cog fa-sm"></span>
+                        }
+                    </div>
+                    <div class="memberCardRole">
+                        @projectUser.MemberRole.Title
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
 </div>

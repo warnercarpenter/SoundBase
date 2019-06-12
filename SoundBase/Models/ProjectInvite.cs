@@ -20,7 +20,7 @@ namespace SoundBase.Models
 
         [DataType(DataType.Date)]
         [DatabaseGenerated(DatabaseGeneratedOption.Computed)]
-        public DateTime DateAccepted { get; set; }
+        public DateTime? DateAccepted { get; set; }
 
         [Required]
         public bool IsActive { get; set; }

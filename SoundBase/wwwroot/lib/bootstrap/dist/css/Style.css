@@ -27,6 +27,14 @@ body {
     overflow: hidden;
 }
 
+button:focus {
+    outline: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
 .navbar {
     background: var(--purple-dark);
     border: none !important;
@@ -230,10 +238,6 @@ a {
     transition: 0.25s;
 }
 
-.submitButton:focus {
-    outline: none;
-}
-
 .submitButton:hover {
     color: var(--purple-medium-dark);
 }
@@ -270,4 +274,115 @@ a {
 
 .fromCurrentUser .chatBubbleName {
     color: var(--purple-light)
+}
+
+.wideButton {
+    background-color: var(--purple-dark);
+    color: white;
+    border: none;
+    margin: 6px;
+    padding: 4px;
+    border-radius: 4px;
+    font-size: 1.2em;
+    transition: 0.15s;
+    text-decoration: none;
+    text-align: center;
+}
+
+.wideButton:hover {
+    background-color: var(--purple-medium-dark);
+    text-decoration: none;
+    color: white;
+}
+
+
+.memberCard {
+    background-color: var(--purple-medium-dark);
+    padding: 10px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.memberCardContainer .memberCard:nth-child(even) {
+    background-color: var(--purple-medium-light);
+}
+
+.memberCardName {
+    font-size: 1.2em;
+}
+
+.memberCardInfo {
+    display: inline-block;
+}
+
+.memberCardButtons {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.inviteButton {
+    background: none;
+    border: none;
+    color: white !important;
+}
+
+.inviteButton:hover {
+    transform: scale(1.05);
+}
+
+.inviteContainer {
+    background-color: var(--purple-light);
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    max-height: 100%;
+    max-width: 100%;
+}
+
+.inviteCard {
+    background-color: var(--purple-medium-dark);
+    padding: 10px;
+    color: white;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+}
+
+.inviteCard .projectTopBarArtistName {
+    border-bottom: solid 1px white;
+}
+
+.inviteNameDate {
+    margin: 10px;
+    margin-top: 4px;
+    margin-bottom: 0px;
+    font-size: .7em;
+}
+
+.inviteButtonHolder {
+    display: flex;
+    flex-direction: column-reverse;
+}
+
+.acceptDeclineButtons .submitButton {
+    background: none;
+    border: none;
+    color: white;
+    margin-right: 4px;
+}
+
+.zoomIcon {
+    transition: 0.15s;
+}
+
+.acceptDeclineButtons .zoomIcon:hover {
+    transform: scale(1.1);
+    cursor: pointer;
+}
+
+.inviteContainer .inviteCard:nth-child(even) {
+    background-color: var(--purple-medium-light);
 }

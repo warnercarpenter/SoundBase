@@ -54,7 +54,7 @@ namespace SoundBase.Controllers
 
             var user = await GetCurrentUserAsync();
 
-            ViewBag.Page = "Chat";
+            ViewBag.PageTitle = "Chat";
 
             ProjectChatViewModel viewproject = new ProjectChatViewModel();
 
@@ -236,6 +236,23 @@ namespace SoundBase.Controllers
             return View(project);
         }
 
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Project.FirstOrDefaultAsync(m => m.ProjectId == id);
+
+            if (project == null)
+            {
+                return NotFound();
+            }
+
+            return View(project);
+        }
+
         public async Task<IActionResult> Members(int? id)
         {
             if (id == null)
@@ -243,17 +260,73 @@ namespace SoundBase.Controllers
                 return NotFound();
             }
 
-            var project = await _context.Project.FindAsync(id);
+            var project = await _context.Project
+                .Include(p => p.Creator)
+                .Include(p => p.ProjectUsers)
+                .ThenInclude(pu => pu.MemberRole)
+                .Include(p => p.ProjectUsers)
+                .ThenInclude(pu => pu.User)
+                .FirstOrDefaultAsync(p => p.ProjectId == id);
 
             ViewBag.ProjectId = id;
             ViewBag.ArtistName = project.ArtistName;
             ViewBag.ProjectTitle = project.Title;
             ViewBag.ImagePath = project.ImagePath;
-            ViewBag.Title = "Members";
+            ViewBag.PageTitle = "Members";
 
+            return View(project);
+        }
+
+        public async Task<IActionResult> InviteMembers(int id)
+        {
+
+            var project = await _context.Project
+                .Include(p => p.Creator)
+                .Include(p => p.ProjectUsers)
+                .ThenInclude(pu => pu.User)
+                .FirstOrDefaultAsync(p => p.ProjectId == id);
+
+            var users = _context.ApplicationUsers.Include(u => u.ProjectUsers).Include(u => u.ProjectInvitesReceived).ToList();
+
+            var viewmodel = new InviteUserViewModel();
+            viewmodel.ProjectId = id;
+            viewmodel.Users = new List<ApplicationUser>();
+
+            foreach (ApplicationUser user in users)
+            {
+                user.ProjectUsers = user.ProjectUsers.Where(pu => pu.ProjectId == id).ToList();
+                user.ProjectInvitesReceived = user.ProjectInvitesReceived.Where(pi => pi.ProjectId == id).ToList();
+                if (user.ProjectUsers.Count < 1 && user.ProjectInvitesReceived.Count < 1)
+                {
+                    viewmodel.Users.Add(user);
+                };
+            }
+
+            ViewBag.ProjectId = id;
+            ViewBag.ArtistName = project.ArtistName;
+            ViewBag.ProjectTitle = project.Title;
+            ViewBag.ImagePath = project.ImagePath;
+            ViewBag.PageTitle = "Members";
+
+            return View(viewmodel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> InviteMembers(InviteUserViewModel viewmodel)
+        {
             var user = await GetCurrentUserAsync();
-            var members = _context.ProjectUser.Include(pu => pu.User).Where(pu => pu.ProjectId == id);
-            return View(await members.ToListAsync());
+
+            var projectInvite = new ProjectInvite();
+            projectInvite.DateInvited = DateTime.Now;
+            projectInvite.IsActive = true;
+            projectInvite.SenderId = user.Id;
+            projectInvite.ReceiverId = viewmodel.UserId;
+            projectInvite.ProjectId = viewmodel.ProjectId;
+
+            _context.Add(projectInvite);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("InviteMembers", new { id = viewmodel.ProjectId });
         }
 
         private bool ProjectExists(int id)
