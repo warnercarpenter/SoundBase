@@ -1,0 +1,49 @@
+﻿<div class="sideBar">
+    @if (ViewBag.Title == "Chat")
+    {
+        <div class="iconHolder selected">
+            <a style="font-size: 1.1em" asp-action="Chat" asp-route-id="@ViewBag.ProjectId">
+                <span class="icon fas fa-comment fa-lg"></span>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="iconHolder">
+            <a style="font-size: 1.1em" asp-action="Chat" asp-route-id="@ViewBag.ProjectId">
+                <span class="icon fas fa-comment fa-lg"></span>
+            </a>
+        </div>
+    }
+    @if (ViewBag.Title == "Members")
+    {
+        <div class="iconHolder selected">
+            <a style="font-size: 1.1em" asp-action="Members" asp-route-id="@ViewBag.ProjectId">
+                <span class="icon fas fa-users fa-lg"></span>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="iconHolder">
+            <a style="font-size: 1.1em" asp-action="Members" asp-route-id="@ViewBag.ProjectId">
+                <span class="icon fas fa-users fa-lg"></span>
+            </a>
+        </div>
+    }
+    <div class="iconHolder">
+        <a style="font-size: .9em" asp-action="Tracks" asp-route-id="@ViewBag.ProjectId">
+            <span class="icon fab fa-itunes-note fa-2x"></span>
+        </a>
+    </div>
+    <div class="iconHolder">
+        <a style="font-size: .8em" asp-action="Info" asp-route-id="@ViewBag.ProjectId">
+            <span class="icon fas fa-info-circle fa-2x"></span>
+        </a>
+    </div>
+    <div class="iconHolder">
+        <a style="font-size: .8em" asp-action="Edit" asp-route-id="@ViewBag.ProjectId">
+            <span class="icon fas fa-cog fa-2x"></span>
+        </a>
+    </div>
+</div>

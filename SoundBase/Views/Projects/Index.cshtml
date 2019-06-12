@@ -1,0 +1,21 @@
+﻿@model IEnumerable<SoundBase.Models.Project>
+
+@{
+    ViewData["Title"] = "Index";
+}
+    
+<div class="projectContainer">
+    <h1>@ViewBag.Name's Projects</h1>
+
+    <p>
+        <a asp-action="Create">Create New Project</a>
+    </p>
+    <ul>
+        @foreach (var item in Model)
+        {
+            <li>
+                <a asp-action="Chat" asp-route-id="@item.ProjectId">@item.Title</a>
+            </li>
+        }
+    </ul>
+</div>

@@ -1,0 +1,69 @@
+﻿@model SoundBase.Models.ProjectChatViewModel
+
+@{
+    ViewData["Title"] = "Chat";
+    ViewBag.ProjectId = Model.Project.ProjectId;
+}
+
+<partial name="_sideBar" />
+
+<div class="projectContainer">
+    <partial name="_ProjectTopBar" />
+    <div class="projectInnerContainer">
+        <div id="messageContainer" class="messageContainer">
+            @foreach (ChatMessage chatMessage in Model.Project.ChatMessages)
+            {
+            if (chatMessage.UserId == ViewBag.UserId)
+            {
+            <div class="chatBubble fromCurrentUser">
+                <div class="chatBubbleContent">
+                    @chatMessage.Content
+                </div>
+                <div class="chatBubbleName">
+                    @chatMessage.User.FirstName @chatMessage.User.LastName <br /> <span class="chatBubbleDate">@chatMessage.DatePosted.ToString("MMMM d, hh:mm tt")</span>
+                </div>
+            </div>
+            }
+            else
+            {
+            <div class="chatBubble">
+                <div class="chatBubbleContent">
+                    @chatMessage.Content
+                </div>
+                <div class="chatBubbleName">
+                    @chatMessage.User.FirstName @chatMessage.User.LastName <br /> <span class="chatBubbleDate">@chatMessage.DatePosted.ToString("MMMM d, hh:mm tt")</span>
+                </div>
+            </div>
+            }
+            }
+        </div>
+        <div class="messageInputContainer">
+            <form autocomplete="off" class="chatInputForm" asp-action="Chat">
+                <input type="hidden" asp-for="ProjectId" />
+                <input type="hidden" asp-for="Project" />
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="chatInputDiv">
+                    <input class="chatInput" autocomplete="off" spellcheck="false" asp-for="ChatMessage" value="" />
+                    <button type="submit" value="Send" class="submitButton">
+                        <i class="fa fa-paper-plane fa-lg"></i>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>
+
+<script>
+    var element = document.getElementById("messageContainer");
+    element.scrollTop = element.scrollHeight;
+</script>

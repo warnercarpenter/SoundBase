@@ -1,0 +1,16 @@
+﻿<div class="projectTopBar">
+    <div class="projectTopBarContents">
+        @if (ViewBag.ImagePath != null)
+        {
+            <img src="/images/@ViewBag.ImagePath" width="60" height="60" />
+        }
+        <div class="projectTopBarText">
+            <div class="projectTopBarArtistName">
+                @ViewBag.ArtistName
+            </div>
+            <div class="projectTopBarTitle">
+                @ViewBag.ProjectTitle
+            </div>
+        </div>
+    </div>
+</div>
