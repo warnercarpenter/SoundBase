@@ -396,32 +396,36 @@ a {
 
 .categoryTitle {
     color: white;
-    margin: 0.5rem;
-    margin-left: 0;
-    margin-top: 0px;
+    margin: 0;
+    font-size: .9em;
+    display: inline-block;
 }
 
 .detailsContentBlock {
-    background-color: var(--purple-dark);
-    display: inline-block;
-    border-radius: 8px;
-    padding: 8px;
-    margin-bottom: 12px;
+    display: block;
     color: white;
-    min-width: 200px;
-    max-width: 500px;
+    max-width: 342px;
+    line-height: 1.2;
+    margin-top: 4px;
+    font-weight: bold;
 }
 
 .infoContainer {
     padding: 12px;
-    background-color: var(--purple-medium-dark);
+    background-color: var(--purple-medium-light);
 }
+
+    .infoContainer hr {
+        margin-top: 8px;
+        margin-bottom: 8px;
+        border-top: solid 1px var(--purple-medium-dark);
+    }
 
 .editContainer {
 }
 
 .editFormBackground {
-    background-color: var(--purple-medium-dark);
+    background-color: var(--purple-medium-light);
     padding: 12px;
 }
 
@@ -429,7 +433,7 @@ a {
     background-color: white;
     display: inline-block;
     border: none;
-    border-radius: 8px;
+    border-radius: 4px 0px 0px 4px;
     padding: 8px;
     margin-bottom: 12px;
     color: var(--grey-medium-dark);
@@ -449,7 +453,7 @@ a {
 .editInput {
     background-color: white;
     display: inline-block;
-    border-radius: 8px;
+    border-radius: 4px;
     padding: 8px;
     margin-bottom: 12px;
     color: var(--grey-medium-dark);
@@ -513,6 +517,9 @@ a {
         cursor: pointer;
     }
 
+.trackCardContainer {
+    overflow-y: auto;
+}
 
 .trackCard {
     background-color: var(--purple-medium-dark);
@@ -528,7 +535,6 @@ a {
 }
 
 .trackCardTitle {
-    font-size: 1.2em;
     margin-bottom: 6px;
 }
 

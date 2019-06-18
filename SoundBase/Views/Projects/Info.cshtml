@@ -9,25 +9,28 @@
 <div class="projectContainer">
     <partial name="_ProjectTopBar" />
     <div class="infoContainer">
-        <div class="categoryTitle">
-            Artist:
+        <div class="categoryTitle" style="border-bottom: solid 1px white">
+            Artist
         </div>
         <div class="detailsContentBlock">
             @ViewBag.ArtistName
         </div>
-        <div class="categoryTitle">
-            Title:
+        <hr />
+        <div class="categoryTitle" style="border-bottom: solid 1px white">
+            Title
         </div>
         <div class="detailsContentBlock">
             @Model.Title
         </div>
-        <div class="categoryTitle">
-            Description:
+        <hr />
+        <div class="categoryTitle" style="border-bottom: solid 1px white">
+            Description
         </div>
         <div class="detailsContentBlock">
             @Model.Description
         </div>
-        <div class="categoryTitle">Members: <strong>@Model.ProjectUsers.Count</strong></div>
-        <div class="categoryTitle">Created by <strong>@Model.Creator.FirstName @Model.Creator.LastName</strong> on <strong>@Model.DateCreated.ToString("MMMM d, hh:mm tt")</strong></div>
+        <hr />
+        <div class="categoryTitle">Members: <strong>@Model.ProjectUsers.Count</strong></div><br/>
+        <div class="categoryTitle">Created by: <strong>@Model.Creator.FirstName @Model.Creator.LastName</strong> on <strong>@Model.DateCreated.ToString("MMMM d, hh:mm tt")</strong></div>
     </div>
 </div>

@@ -77,6 +77,7 @@ namespace SoundBase.Controllers
             ViewBag.ProjectTitle = viewproject.Project.Title;
             ViewBag.ImagePath = viewproject.Project.ImagePath;
             ViewBag.UserId = user.Id;
+            ViewBag.IsProjectOwner = await IsProjectOwnerAsync(id);
 
             return View(viewproject);
         }
@@ -109,6 +110,7 @@ namespace SoundBase.Controllers
             ViewBag.ProjectTitle = viewproject.Project.Title;
             ViewBag.ImagePath = viewproject.Project.ImagePath;
             ViewBag.UserId = user.Id;
+            ViewBag.IsProjectOwner = await IsProjectOwnerAsync(viewproject.Project.ProjectId);
 
             return View(viewproject);
         }
@@ -184,14 +186,14 @@ namespace SoundBase.Controllers
         }
 
         // GET: Projects/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var project = await _context.Project.FindAsync(id);
+
+            if (await IsProjectOwnerAsync(id) == false)
+            {
+                return RedirectToAction("Chat", new { id = id });
+            }
 
             var viewproject = new ProjectEditViewModel();
             viewproject.Project = project;
@@ -206,6 +208,7 @@ namespace SoundBase.Controllers
             ViewBag.ProjectTitle = viewproject.Project.Title;
             ViewBag.ImagePath = viewproject.Project.ImagePath;
             ViewBag.ProjectId = id;
+            ViewBag.IsProjectOwner = await IsProjectOwnerAsync(id);
 
             ViewBag.PageTitle = "Edit";
             ViewData["CreatorId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", project.CreatorId);
@@ -235,13 +238,8 @@ namespace SoundBase.Controllers
             return RedirectToAction("Edit", new { id = project.ProjectId });
         }
 
-        public async Task<IActionResult> Info(int? id)
+        public async Task<IActionResult> Info(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var project = await _context.Project.Include(p => p.ProjectUsers).Include(p => p.Creator).FirstOrDefaultAsync(m => m.ProjectId == id);
 
             ViewBag.PageTitle = "Info";
@@ -249,6 +247,7 @@ namespace SoundBase.Controllers
             ViewBag.ProjectTitle = project.Title;
             ViewBag.ImagePath = project.ImagePath;
             ViewBag.ProjectId = id;
+            ViewBag.IsProjectOwner = await IsProjectOwnerAsync(id);
 
             if (project == null)
             {
@@ -258,14 +257,8 @@ namespace SoundBase.Controllers
             return View(project);
         }
 
-        //MAKE THIS PUBLIC WHEN BACK ON WIFI
-        public async Task<IActionResult> Members(int? id)
+        public async Task<IActionResult> Members(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var project = await _context.Project
                 .Include(p => p.Creator)
                 .Include(p => p.ProjectUsers)
@@ -279,17 +272,13 @@ namespace SoundBase.Controllers
             ViewBag.ProjectTitle = project.Title;
             ViewBag.ImagePath = project.ImagePath;
             ViewBag.PageTitle = "Members";
+            ViewBag.IsProjectOwner = await IsProjectOwnerAsync(id);
 
             return View(project);
         }
 
-        public async Task<IActionResult> Tracks(int? id)
+        public async Task<IActionResult> Tracks(int id)
         {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
             var project = await _context.Project
                 .FirstOrDefaultAsync(p => p.ProjectId == id);
 
@@ -300,6 +289,7 @@ namespace SoundBase.Controllers
             ViewBag.ProjectTitle = project.Title;
             ViewBag.ImagePath = project.ImagePath;
             ViewBag.PageTitle = "Tracks";
+            ViewBag.IsProjectOwner = await IsProjectOwnerAsync(id);
 
             return View(tracks);
         }
@@ -313,6 +303,7 @@ namespace SoundBase.Controllers
             ViewBag.ArtistName = project.ArtistName;
             ViewBag.ProjectTitle = project.Title;
             ViewBag.ImagePath = project.ImagePath;
+            ViewBag.IsProjectOwner = await IsProjectOwnerAsync(id);
 
             var viewmodel = new TrackCreateViewModel
             {
@@ -377,6 +368,7 @@ namespace SoundBase.Controllers
             ViewBag.ProjectTitle = project.Title;
             ViewBag.ImagePath = project.ImagePath;
             ViewBag.PageTitle = "Members";
+            ViewBag.IsProjectOwner = await IsProjectOwnerAsync(id);
 
             return View(viewmodel);
         }
@@ -402,6 +394,23 @@ namespace SoundBase.Controllers
         private bool ProjectExists(int id)
         {
             return _context.Project.Any(e => e.ProjectId == id);
+        }
+
+        public async Task<bool> IsProjectOwnerAsync(int id)
+        {
+            var user = await GetCurrentUserAsync();
+
+            var project = await _context.Project
+                .FirstOrDefaultAsync(p => p.ProjectId == id);
+
+            if (project.CreatorId == user.Id)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 }

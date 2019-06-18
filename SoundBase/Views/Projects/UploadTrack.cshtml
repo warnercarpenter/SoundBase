@@ -4,33 +4,33 @@
     ViewData["Title"] = "UploadTrack";
 }
 
-<h1>Upload Track</h1>
-
-<h4>Track</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<partial name="_sideBar" />
+<div class="projectContainer">
+    <partial name="_ProjectTopBar" />
+    <div class="editContainer">
         <form asp-action="UploadTrack" enctype="multipart/form-data">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <input type="hidden" asp-for="Track.ProjectId" />
-            <div class="form-group">
-                <label asp-for="Track.Title" class="control-label"></label>
-                <input asp-for="Track.Title" class="form-control" />
-                <span asp-validation-for="Track.Title" class="text-danger"></span>
+            <div class="editFormBackground">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <input type="hidden" asp-for="Track.ProjectId" />
+                <div class="editFormGroup">
+                    <label class="categoryTitle">Title</label><br />
+                    <input asp-for="Track.Title" class="editInput" />
+                    <span asp-validation-for="Track.Title" class="text-danger"></span>
+                </div>
+                <div class="editFormGroup">
+                    <label for="trackUpload" class="categoryTitle">
+                        Upload Track<br />
+                        <div class="uploadButton">
+                            Choose File
+                        </div>
+                    </label><br />
+                    <input id="trackUpload" asp-for="AudioFile" class="inputFile" type="file" />
+                    <span asp-validation-for="AudioFile" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="AudioFile" class="control-label"></label>
-                <input asp-for="AudioFile" class="form-control" type="file" /><br><br>
-                <span asp-validation-for="AudioFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="editFormGroup">
+                <button type="submit" class="editSaveButton">Submit</button>
             </div>
         </form>
     </div>
 </div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
-</div>
-

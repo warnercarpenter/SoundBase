@@ -63,20 +63,23 @@
             </a>
         </div>
     }
-    @if (ViewBag.PageTitle == "Edit")
+    @if (ViewBag.IsProjectOwner)
     {
-        <div class="iconHolder selected">
-            <a style="font-size: .8em" asp-action="Edit" asp-route-id="@ViewBag.ProjectId">
-                <span class="icon fas fa-cog fa-2x"></span>
-            </a>
-        </div>
-    }
-    else
-    {
-        <div class="iconHolder">
-            <a style="font-size: .8em" asp-action="Edit" asp-route-id="@ViewBag.ProjectId">
-                <span class="icon fas fa-cog fa-2x"></span>
-            </a>
-        </div>
+        @if (ViewBag.PageTitle == "Edit")
+        {
+            <div class="iconHolder selected">
+                <a style="font-size: .8em" asp-action="Edit" asp-route-id="@ViewBag.ProjectId">
+                    <span class="icon fas fa-cog fa-2x"></span>
+                </a>
+            </div>
+        }
+        else
+        {
+            <div class="iconHolder">
+                <a style="font-size: .8em" asp-action="Edit" asp-route-id="@ViewBag.ProjectId">
+                    <span class="icon fas fa-cog fa-2x"></span>
+                </a>
+            </div>
+        }
     }
 </div>

@@ -18,23 +18,23 @@
 
             <div class="editFormBackground">
                 <div class="editFormGroup">
-                    <label class="categoryTitle">Artist Name:</label><br />
+                    <label class="categoryTitle">Edit Artist</label><br />
                     <input asp-for="Project.ArtistName" class="editInput" />
                     <span asp-validation-for="Project.ArtistName" class="text-danger"></span>
                 </div>
                 <div class="editFormGroup">
-                    <label class="categoryTitle">Title</label><br />
+                    <label class="categoryTitle">Edit Title</label><br />
                     <input asp-for="Project.Title" class="editInput" />
                     <span asp-validation-for="Project.Title" class="text-danger"></span>
                 </div>
                 <div class="editFormGroup">
-                    <label class="categoryTitle">Description:</label><br />
+                    <label class="categoryTitle">Edit Description</label><br />
                     @Html.TextArea("Project.Description", new { rows = 4, cols = 40 })
                     <span asp-validation-for="Project.Description" class="text-danger"></span>
                 </div>
                 <div class="editFormGroup">
                     <label for="imageUpload" class="categoryTitle">
-                        Upload New Cover Image:<br />
+                        Edit Cover Image<br />
                         <div class="uploadButton">
                             Choose File
                         </div>
