@@ -1,0 +1,29 @@
+﻿@model IEnumerable<SoundBase.Models.Track>
+
+@{
+    ViewData["Title"] = "Tracks";
+}
+
+<partial name="_sideBar" />
+
+<div class="projectContainer">
+    <partial name="_ProjectTopBar" />
+    <a class="wideButton" asp-action="UploadTrack" asp-route-id="@ViewBag.ProjectId">Upload Track</a>
+    <div class="trackCardContainer">
+        @foreach (Track track in Model)
+        {
+            <div class="trackCard">
+                <div class="trackCardTitle">
+                    @track.Title
+                </div>
+                <audio controls>
+                    <source src="~/audio/@track.FilePath">
+                    Your browser does not support the audio element.
+                </audio>
+                <div class="trackCardTimestamp">
+                    @track.User.FirstName @track.User.LastName - @track.DateUploaded.ToString("MMMM d, hh:mm tt")
+                </div>
+            </div>
+        }
+    </div>
+</div>

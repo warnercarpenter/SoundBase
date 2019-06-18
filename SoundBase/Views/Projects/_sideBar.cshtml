@@ -31,15 +31,26 @@
             </a>
         </div>
     }
-    <div class="iconHolder">
-        <a style="font-size: .9em" asp-action="Tracks" asp-route-id="@ViewBag.ProjectId">
-            <span class="icon fab fa-itunes-note fa-2x"></span>
-        </a>
-    </div>
-    @if (ViewBag.PageTitle == "Details")
+    @if (ViewBag.PageTitle == "Tracks")
     {
         <div class="iconHolder selected">
-            <a style="font-size: .8em" asp-action="Details" asp-route-id="@ViewBag.ProjectId">
+            <a style="font-size: .9em" asp-action="Tracks" asp-route-id="@ViewBag.ProjectId">
+                <span class="icon fab fa-itunes-note fa-2x"></span>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="iconHolder">
+            <a style="font-size: .9em" asp-action="Tracks" asp-route-id="@ViewBag.ProjectId">
+                <span class="icon fab fa-itunes-note fa-2x"></span>
+            </a>
+        </div>
+    }
+    @if (ViewBag.PageTitle == "Info")
+    {
+        <div class="iconHolder selected">
+            <a style="font-size: .8em" asp-action="Info" asp-route-id="@ViewBag.ProjectId">
                 <span class="icon fas fa-info-circle fa-2x"></span>
             </a>
         </div>
@@ -47,14 +58,25 @@
     else
     {
         <div class="iconHolder">
-            <a style="font-size: .8em" asp-action="Details" asp-route-id="@ViewBag.ProjectId">
+            <a style="font-size: .8em" asp-action="Info" asp-route-id="@ViewBag.ProjectId">
                 <span class="icon fas fa-info-circle fa-2x"></span>
             </a>
         </div>
     }
-    <div class="iconHolder">
-        <a style="font-size: .8em" asp-action="Edit" asp-route-id="@ViewBag.ProjectId">
-            <span class="icon fas fa-cog fa-2x"></span>
-        </a>
-    </div>
+    @if (ViewBag.PageTitle == "Edit")
+    {
+        <div class="iconHolder selected">
+            <a style="font-size: .8em" asp-action="Edit" asp-route-id="@ViewBag.ProjectId">
+                <span class="icon fas fa-cog fa-2x"></span>
+            </a>
+        </div>
+    }
+    else
+    {
+        <div class="iconHolder">
+            <a style="font-size: .8em" asp-action="Edit" asp-route-id="@ViewBag.ProjectId">
+                <span class="icon fas fa-cog fa-2x"></span>
+            </a>
+        </div>
+    }
 </div>

@@ -1,0 +1,33 @@
+﻿@model SoundBase.Models.Project
+
+@{
+    ViewData["Title"] = "Info";
+}
+
+<partial name="_sideBar" />
+
+<div class="projectContainer">
+    <partial name="_ProjectTopBar" />
+    <div class="infoContainer">
+        <div class="categoryTitle">
+            Artist:
+        </div>
+        <div class="detailsContentBlock">
+            @ViewBag.ArtistName
+        </div>
+        <div class="categoryTitle">
+            Title:
+        </div>
+        <div class="detailsContentBlock">
+            @Model.Title
+        </div>
+        <div class="categoryTitle">
+            Description:
+        </div>
+        <div class="detailsContentBlock">
+            @Model.Description
+        </div>
+        <div class="categoryTitle">Members: <strong>@Model.ProjectUsers.Count</strong></div>
+        <div class="categoryTitle">Created by <strong>@Model.Creator.FirstName @Model.Creator.LastName</strong> on <strong>@Model.DateCreated.ToString("MMMM d, hh:mm tt")</strong></div>
+    </div>
+</div>

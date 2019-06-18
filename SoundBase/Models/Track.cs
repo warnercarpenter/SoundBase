@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -22,7 +23,6 @@ namespace SoundBase.Models
         [StringLength(55)]
         public string Title { get; set; }
 
-        [Required]
         public string Description { get; set; }
 
         [Required]
@@ -30,9 +30,14 @@ namespace SoundBase.Models
 
         public Project Project { get; set; }
 
+
         [Required]
         public string UserId { get; set; }
 
         public ApplicationUser User { get; set; }
+
+        [Required(ErrorMessage = "Please select a track")]
+        [DisplayName("Upload .wav or .mp3 file")]
+        public string FilePath { get; set; }
     }
 }

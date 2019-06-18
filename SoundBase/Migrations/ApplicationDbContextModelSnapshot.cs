@@ -339,7 +339,9 @@ namespace SoundBase.Migrations
                         .ValueGeneratedOnAddOrUpdate()
                         .HasDefaultValueSql("GETDATE()");
 
-                    b.Property<string>("Description")
+                    b.Property<string>("Description");
+
+                    b.Property<string>("FilePath")
                         .IsRequired();
 
                     b.Property<int>("ProjectId");

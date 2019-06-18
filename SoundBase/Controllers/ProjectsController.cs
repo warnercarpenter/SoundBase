@@ -192,12 +192,24 @@ namespace SoundBase.Controllers
             }
 
             var project = await _context.Project.FindAsync(id);
+
+            var viewproject = new ProjectEditViewModel();
+            viewproject.Project = project;
+            viewproject.ImagePath = project.ImagePath;
+
             if (project == null)
             {
                 return NotFound();
             }
+
+            ViewBag.ArtistName = viewproject.Project.ArtistName;
+            ViewBag.ProjectTitle = viewproject.Project.Title;
+            ViewBag.ImagePath = viewproject.Project.ImagePath;
+            ViewBag.ProjectId = id;
+
+            ViewBag.PageTitle = "Edit";
             ViewData["CreatorId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", project.CreatorId);
-            return View(project);
+            return View(viewproject);
         }
 
         // POST: Projects/Edit/5
@@ -205,45 +217,38 @@ namespace SoundBase.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("ProjectId,DateCreated,CreatorId,ArtistName,Title,Description,ImagePath")] Project project)
+        public async Task<IActionResult> Edit(ProjectEditViewModel viewproject)
         {
-            if (id != project.ProjectId)
+            var project = viewproject.Project;
+
+            if (project.ImagePath == null)
             {
-                return NotFound();
+                project.ImagePath = viewproject.ImagePath;
             }
 
             if (ModelState.IsValid)
             {
-                try
-                {
-                    _context.Update(project);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!ProjectExists(project.ProjectId))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
+                _context.Update(project);
+                await _context.SaveChangesAsync();
+                return RedirectToAction("Chat", new { id = project.ProjectId });
             }
-            ViewData["CreatorId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", project.CreatorId);
-            return View(project);
+            return RedirectToAction("Edit", new { id = project.ProjectId });
         }
 
-        public async Task<IActionResult> Details(int? id)
+        public async Task<IActionResult> Info(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var project = await _context.Project.FirstOrDefaultAsync(m => m.ProjectId == id);
+            var project = await _context.Project.Include(p => p.ProjectUsers).Include(p => p.Creator).FirstOrDefaultAsync(m => m.ProjectId == id);
+
+            ViewBag.PageTitle = "Info";
+            ViewBag.ArtistName = project.ArtistName;
+            ViewBag.ProjectTitle = project.Title;
+            ViewBag.ImagePath = project.ImagePath;
+            ViewBag.ProjectId = id;
 
             if (project == null)
             {
@@ -253,6 +258,7 @@ namespace SoundBase.Controllers
             return View(project);
         }
 
+        //MAKE THIS PUBLIC WHEN BACK ON WIFI
         public async Task<IActionResult> Members(int? id)
         {
             if (id == null)
@@ -275,6 +281,70 @@ namespace SoundBase.Controllers
             ViewBag.PageTitle = "Members";
 
             return View(project);
+        }
+
+        public async Task<IActionResult> Tracks(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var project = await _context.Project
+                .FirstOrDefaultAsync(p => p.ProjectId == id);
+
+            var tracks = _context.Track.Include(t => t.Project).Include(t => t.User).Where(t => t.ProjectId == id).ToList();
+
+            ViewBag.ProjectId = id;
+            ViewBag.ArtistName = project.ArtistName;
+            ViewBag.ProjectTitle = project.Title;
+            ViewBag.ImagePath = project.ImagePath;
+            ViewBag.PageTitle = "Tracks";
+
+            return View(tracks);
+        }
+
+        public async Task<IActionResult> UploadTrack(int id)
+        {
+            var project = await _context.Project
+                .FirstOrDefaultAsync(p => p.ProjectId == id);
+
+            ViewBag.ProjectId = id;
+            ViewBag.ArtistName = project.ArtistName;
+            ViewBag.ProjectTitle = project.Title;
+            ViewBag.ImagePath = project.ImagePath;
+
+            var viewmodel = new TrackCreateViewModel
+            {
+                Track = new Track
+                {
+                    ProjectId = id
+                }
+            };
+
+            return View(viewmodel);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> UploadTrack(TrackCreateViewModel viewmodel)
+        {
+            var user = await GetCurrentUserAsync();
+
+            var fileName = Path.GetFileName(viewmodel.AudioFile.FileName);
+            Path.GetTempFileName();
+            var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\audio", fileName);
+            using (var stream = new FileStream(filePath, FileMode.Create))
+            {
+                await viewmodel.AudioFile.CopyToAsync(stream);
+            }
+
+            viewmodel.Track.FilePath = viewmodel.AudioFile.FileName;
+
+            viewmodel.Track.UserId = user.Id;
+            _context.Add(viewmodel.Track);
+            await _context.SaveChangesAsync();
+            return RedirectToAction("Tracks", new { id = viewmodel.Track.ProjectId });
         }
 
         public async Task<IActionResult> InviteMembers(int id)

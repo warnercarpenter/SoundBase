@@ -182,7 +182,7 @@ a {
     overflow: auto;
     padding: 12px;
     padding-bottom: 0px;
-}   
+}
 
 .messageInputContainer {
     height: 60px;
@@ -210,11 +210,11 @@ a {
     justify-content: center;
 }
 
-.chatInputDiv button {
-    background: none;
-    border: none;
-    padding: 0;
-}
+    .chatInputDiv button {
+        background: none;
+        border: none;
+        padding: 0;
+    }
 
 .chatInput[type=text] {
     width: 80%;
@@ -228,19 +228,19 @@ a {
     padding-right: 12px;
 }
 
-.chatInput[type=text]:focus {
-    background-color: var(--grey-very-light);
-    width: 90%;
-}
+    .chatInput[type=text]:focus {
+        background-color: var(--grey-very-light);
+        width: 90%;
+    }
 
 .submitButton {
     color: var(--purple-dark);
     transition: 0.25s;
 }
 
-.submitButton:hover {
-    color: var(--purple-medium-dark);
-}
+    .submitButton:hover {
+        color: var(--purple-medium-dark);
+    }
 
 .chatBubble {
     background-color: white;
@@ -272,9 +272,9 @@ a {
     color: white;
 }
 
-.fromCurrentUser .chatBubbleName {
-    color: var(--purple-light)
-}
+    .fromCurrentUser .chatBubbleName {
+        color: var(--purple-light)
+    }
 
 .wideButton {
     background-color: var(--purple-dark);
@@ -289,11 +289,11 @@ a {
     text-align: center;
 }
 
-.wideButton:hover {
-    background-color: var(--purple-medium-dark);
-    text-decoration: none;
-    color: white;
-}
+    .wideButton:hover {
+        background-color: var(--purple-medium-dark);
+        text-decoration: none;
+        color: white;
+    }
 
 
 .memberCard {
@@ -329,9 +329,9 @@ a {
     color: white !important;
 }
 
-.inviteButton:hover {
-    transform: scale(1.05);
-}
+    .inviteButton:hover {
+        transform: scale(1.05);
+    }
 
 .inviteContainer {
     background-color: var(--purple-light);
@@ -351,9 +351,9 @@ a {
     justify-content: space-between;
 }
 
-.inviteCard .projectTopBarArtistName {
-    border-bottom: solid 1px white;
-}
+    .inviteCard .projectTopBarArtistName {
+        border-bottom: solid 1px white;
+    }
 
 .inviteNameDate {
     margin: 10px;
@@ -385,4 +385,154 @@ a {
 
 .inviteContainer .inviteCard:nth-child(even) {
     background-color: var(--purple-medium-light);
+}
+
+.containerWithSidebar {
+    display: flex;
+    flex-direction: column;
+    padding: 12px;
+    background-color: var(--purple-light);
+}
+
+.categoryTitle {
+    color: white;
+    margin: 0.5rem;
+    margin-left: 0;
+    margin-top: 0px;
+}
+
+.detailsContentBlock {
+    background-color: var(--purple-dark);
+    display: inline-block;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 12px;
+    color: white;
+    min-width: 200px;
+    max-width: 500px;
+}
+
+.infoContainer {
+    padding: 12px;
+    background-color: var(--purple-medium-dark);
+}
+
+.editContainer {
+}
+
+.editFormBackground {
+    background-color: var(--purple-medium-dark);
+    padding: 12px;
+}
+
+.editFormGroup textarea {
+    background-color: white;
+    display: inline-block;
+    border: none;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 12px;
+    color: var(--grey-medium-dark);
+    max-width: 500px;
+    transition: 0.15s;
+}
+
+    .editFormGroup textarea:hover {
+        transform: scale(1.02);
+    }
+
+    .editFormGroup textarea:focus {
+        transform: scale(1.02);
+        outline: none;
+    }
+
+.editInput {
+    background-color: white;
+    display: inline-block;
+    border-radius: 8px;
+    padding: 8px;
+    margin-bottom: 12px;
+    color: var(--grey-medium-dark);
+    max-width: 500px;
+}
+
+.editFormGroup input {
+    border: none;
+    transition: 0.15s;
+}
+
+    .editFormGroup input:hover {
+        transform: scale(1.02);
+    }
+
+    .editFormGroup input:focus {
+        transform: scale(1.02);
+        outline: none;
+    }
+
+.inputFile {
+    width: 0.1px;
+    height: 0.1px;
+    opacity: 0;
+    overflow: hidden;
+    position: absolute;
+    z-index: -1;
+}
+
+.uploadButton {
+    background-color: var(--purple-dark);
+    display: inline-block;
+    padding: 6px;
+    padding-left: 12px;
+    padding-right: 12px;
+    border-radius: 4px;
+    transition: 0.15s;
+}
+
+    .uploadButton:hover {
+        background-color: white;
+        color: var(--purple-dark);
+        cursor: pointer;
+    }
+
+.editSaveButton {
+    background-color: var(--purple-dark);
+    display: inline-block;
+    padding: 4px;
+    border-radius: 4px;
+    transition: 0.15s;
+    color: white;
+    border: none;
+    width: calc(100% - 12px);
+    margin: 6px;
+    font-size: 1.2em;
+}
+
+    .editSaveButton:hover {
+        background-color: var(--purple-medium-light);
+        cursor: pointer;
+    }
+
+
+.trackCard {
+    background-color: var(--purple-medium-dark);
+    padding: 10px;
+    color: white;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.trackCardContainer .trackCard:nth-child(even) {
+    background-color: var(--purple-medium-light);
+}
+
+.trackCardTitle {
+    font-size: 1.2em;
+    margin-bottom: 6px;
+}
+
+.trackCardTimestamp {
+    margin-top: 6px;
+    font-size: .8em;
 }
