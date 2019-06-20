@@ -5,6 +5,7 @@
     ViewData["ActivePage"] = ManageNavPages.Index;
 }
 
+
 <h4>@ViewData["Title"]</h4>
 <partial name="_StatusMessage" for="StatusMessage" />
 <div class="row">
@@ -36,10 +37,11 @@
                 <input asp-for="Input.PhoneNumber" class="form-control" />
                 <span asp-validation-for="Input.PhoneNumber" class="text-danger"></span>
             </div>
-            <button id="update-profile-button" type="submit" class="btn btn-primary">Save</button>
+            <button id="update-profile-button" type="submit" class="btn btn-primary purpleButton">Save</button>
         </form>
+        <hr/>
         <form class="form-inline" asp-area="Identity" asp-page="/Account/Logout" asp-route-returnUrl="@Url.Action("Index", "Projects", new { area = "" })">
-            <button type="submit" class="nav-link btn btn-link text-dark">Logout</button>
+            <button type="submit" class="btn btn-primary purpleButton" style="width: 100%; margin-bottom: 10px">Sign Out of Account</button>
         </form>
     </div>
 </div>

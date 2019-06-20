@@ -3,19 +3,50 @@
 @{
     ViewData["Title"] = "Index";
 }
-    
-<div class="projectContainer">
-    <h1>@ViewBag.Name's Projects</h1>
 
-    <p>
-        <a asp-action="Create">Create New Project</a>
-    </p>
-    <ul>
-        @foreach (var item in Model)
+
+<div class="inviteContainer">
+<a asp-action="Create" class="wideButton">Create New Project</a>
+    @if (Model.Count() == 0)
+    {
+        <div class="noneFound">
+            <div class="noneFoundContents">
+                <i class="fas fa-sad-cry fa-10x"></i><br />
+                <div style="margin-top: 6px">Sorry, you have not been assigned any projects</div>
+            </div>
+        </div>
+    }
+    else
+    {
+        <div class="header">Select a project:</div>
+        @foreach (var project in Model)
         {
-            <li>
-                <a asp-action="Chat" asp-route-id="@item.ProjectId">@item.Title</a>
-            </li>
+            <a class="inviteCard cardBgHover" asp-action="Chat" asp-route-id="@project.ProjectId">
+                <div>
+                    <div class="inviteCardContents">
+                        <div class="projectTopBarContents">
+                            @if (project.ImagePath != null)
+                            {
+                                <img src="/images/@project.ImagePath" width="60" height="60" />
+                            }
+                            <div class="projectTopBarText">
+                                <div class="projectTopBarArtistName">
+                                    @project.ArtistName
+                                </div>
+                                <div class="projectTopBarTitle">
+                                    @project.Title
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </a>
         }
-    </ul>
+    }
 </div>
+
+<script>
+    if (window.history.replaceState) {
+        window.history.replaceState(null, null, window.location.href);
+    }
+</script>

@@ -4,61 +4,46 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
-
-<h4>Project</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
+<div class="inviteContainer">
+    <div class="editContainer">
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="hidden" asp-for="Project.CreatorId" class="form-control" asp-items="ViewBag.UserId" />
+                <div class="header">Create Project</div>
+            <div class="editFormBackground">
+                <div class="editFormGroup">
+                    <input type="hidden" asp-for="Project.CreatorId" asp-items="ViewBag.UserId" />
+                </div>
+                <div class="editFormGroup">
+                    <label asp-for="Project.ArtistName" class="categoryTitle">Artist Name</label><br />
+                    <input class="editInput" asp-for="Project.ArtistName" />
+                    <span asp-validation-for="Project.ArtistName" class="text-danger"></span>
+                </div>
+                <div class="editFormGroup">
+                    <label asp-for="Project.Title" class="categoryTitle"></label><br />
+                    <input class="editInput" asp-for="Project.Title" />
+                    <span asp-validation-for="Project.Title" class="text-danger"></span>
+                </div>
+                <div class="editFormGroup">
+                    <label asp-for="Project.Description" class="categoryTitle"></label><br />
+                    @Html.TextArea("Project.Description", new { rows = 4, cols = 40 })
+                    <span asp-validation-for="Project.Description" class="text-danger"></span>
+                </div>
+                <div class="editFormGroup">
+                    <label for="imageUpload" class="categoryTitle">
+                        Cover Image<br />
+                        <div class="uploadButton">
+                            Choose File
+                        </div>
+                    </label><br />
+                    <input id="imageUpload" asp-for="ImageFile" class="inputFile" type="file" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="Project.ArtistName" class="control-label"></label>
-                <input asp-for="Project.ArtistName" class="form-control" />
-                <span asp-validation-for="Project.ArtistName" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Project.Title" class="control-label"></label>
-                <input asp-for="Project.Title" class="form-control" />
-                <span asp-validation-for="Project.Title" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Project.Description" class="control-label"></label>
-                <input asp-for="Project.Description" class="form-control" />
-                <span asp-validation-for="Project.Description" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="ImageFile" class="control-label"></label>
-                <input asp-for="ImageFile" class="form-control" type="file" /><br><br>
-                <span asp-validation-for="ImageFile" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for=" MemberRoleId" class="control-label"></label>
-                <select asp-for=" MemberRoleId" class="form-control" asp-items="ViewBag.MemberRoleId">
-                    <option value=0>Your Role</option>
-                </select>
-            </div>
-            @*if product type is null displays window message*@
-            @if (ViewBag.Message != null)
-            {
-                <script type="text/javascript">
-                    window.onload = function() {
-                        alert("@ViewBag.Message");
-                    }
-                </script>
-            }
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
+            <div class="editFormGroup">
+                <button type="submit" class="editSaveButton">Submit</button>
             </div>
         </form>
     </div>
-</div>
-
-<div>
-    <a asp-action="Index">Back to List</a>
 </div>
 
 @section Scripts {

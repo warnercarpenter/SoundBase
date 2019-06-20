@@ -87,6 +87,8 @@ a {
     display: flex;
     flex-direction: row;
     max-width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
 }
 
 .sideBar {
@@ -305,6 +307,11 @@ a {
     justify-content: space-between;
 }
 
+.memberCardContainer {
+    max-height: 100%;
+    overflow-y: auto;
+}
+
 .memberCardContainer .memberCard:nth-child(even) {
     background-color: var(--purple-medium-light);
 }
@@ -350,6 +357,11 @@ a {
     flex-direction: row;
     justify-content: space-between;
 }
+
+    .cardBgHover:hover {
+        background-color: white !important;
+        color: var(--purple-dark);
+    }
 
     .inviteCard .projectTopBarArtistName {
         border-bottom: solid 1px white;
@@ -412,20 +424,20 @@ a {
 
 .infoContainer {
     padding: 12px;
-    background-color: var(--purple-medium-light);
+    background-color: var(--purple-medium-dark);
 }
 
     .infoContainer hr {
         margin-top: 8px;
         margin-bottom: 8px;
-        border-top: solid 1px var(--purple-medium-dark);
+        border-top: solid 1px var(--purple-medium-light);
     }
 
 .editContainer {
 }
 
 .editFormBackground {
-    background-color: var(--purple-medium-light);
+    background-color: var(--purple-medium-dark);
     padding: 12px;
 }
 
@@ -441,12 +453,7 @@ a {
     transition: 0.15s;
 }
 
-    .editFormGroup textarea:hover {
-        transform: scale(1.02);
-    }
-
     .editFormGroup textarea:focus {
-        transform: scale(1.02);
         outline: none;
     }
 
@@ -465,12 +472,7 @@ a {
     transition: 0.15s;
 }
 
-    .editFormGroup input:hover {
-        transform: scale(1.02);
-    }
-
     .editFormGroup input:focus {
-        transform: scale(1.02);
         outline: none;
     }
 
@@ -526,7 +528,7 @@ a {
     padding: 10px;
     color: white;
     display: flex;
-    flex-direction: column;
+    flex-direction: row;
     justify-content: space-between;
 }
 
@@ -541,4 +543,90 @@ a {
 .trackCardTimestamp {
     margin-top: 6px;
     font-size: .8em;
+}
+
+.noneFound {
+    margin: auto;
+    color: var(--purple-dark);
+    padding: 12px;
+    text-align: center;
+    font-size: 1.2em;
+    margin-top: 2em;
+    background-color: white;
+    font-size: 16px;
+    width: 260px;
+    height: 260px;
+    word-wrap: break-word;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    border-radius: 20px;
+}
+
+.header {
+    font-size: 1.4em;
+    padding: 12px;
+    color: white;
+    background-color: var(--purple-medium-light);
+}
+
+.deleteChat {
+    font-size: .8em;
+}
+
+    .deleteChat:hover {
+        color: var(--purple-medium-light);
+    }
+
+.deleteTrackHolder {
+    display: inline-block;
+}
+
+.deleteTrack {
+    display: inline-block;
+    font-size: .9em;
+    background-color: var(--purple-dark);
+    padding: 4px;
+    padding-left: 8px;
+    padding-right: 8px;
+    border-radius: 4px;
+    margin-top: 2px;
+}
+
+    .deleteTrack:hover {
+        color: var(--purple-dark);
+        background-color: white;
+    }
+
+.trackContent {
+    display: flex;
+    flex-direction: column;
+}
+
+.identityContainer {
+    width: 100%;
+    padding: 12px;
+}
+
+.purpleButton {
+    background-color: var(--purple-dark) !important;
+    border-color: var(--purple-dark) !important;
+}
+
+.purpleButton:hover {
+    background-color: var(--purple-medium-dark) !important;
+    border-color: var(--purple-medium-dark) !important;
+}
+
+.nav-link.active {
+    background-color: var(--purple-dark) !important;
+}
+
+.projectIndexHeader {
+    color: white;
+    font-size: 2em;
+}
+
+.projectIndexContainer {
+    padding: 12px;
 }

@@ -10,20 +10,41 @@
     <partial name="_ProjectTopBar" />
     <a class="wideButton" asp-action="UploadTrack" asp-route-id="@ViewBag.ProjectId">Upload Track</a>
     <div class="trackCardContainer">
-        @foreach (Track track in Model)
+        @if (Model.Count() == 0)
         {
-            <div class="trackCard">
-                <div class="trackCardTitle">
-                    @track.Title
-                </div>
-                <audio controls>
-                    <source src="~/audio/@track.FilePath">
-                    Your browser does not support the audio element.
-                </audio>
-                <div class="trackCardTimestamp">
-                    @track.User.FirstName @track.User.LastName - @track.DateUploaded.ToString("MMMM d, hh:mm tt")
+            <div class="noneFound">
+                <div class="noneFoundContents">
+                    <i class="fas fa-sad-cry fa-10x"></i><br />
+                                                         <div style="margin-top: 6px">Sorry, no tracks have been posted for this project</div>
                 </div>
             </div>
+        }
+        else
+        {
+            @foreach (Track track in Model)
+            {
+                <div class="trackCard">
+                    <div class="trackContent">
+                        <div class="trackCardTitle">
+                            @track.Title
+                        </div>
+                        <audio controls>
+                            <source src="~/audio/@track.FilePath">
+                            Your browser does not support the audio element.
+                        </audio>
+                        <div class="trackCardTimestamp">
+                            @track.User.FirstName @track.User.LastName - @track.DateUploaded.ToString("MMMM d, hh:mm tt")
+                        </div>
+
+                        @if (ViewBag.UserId == track.UserId)
+                        {
+                            <div class="trackDeleteHolder">
+                                <a class="deleteTrack" asp-action="DeleteTrack" asp-route-id="@track.TrackId">Delete</a>
+                            </div>
+                        }
+                    </div>
+                </div>
+            }
         }
     </div>
 </div>

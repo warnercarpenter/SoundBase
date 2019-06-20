@@ -22,7 +22,8 @@
                 </div>
                 <div class="chatBubbleName">
                     @chatMessage.User.FirstName @chatMessage.User.LastName <br /> <span class="chatBubbleDate">@chatMessage.DatePosted.ToString("MMMM d, hh:mm tt")</span>
-                </div>
+                </div><br/>
+                <a class="deleteChat" asp-action="DeleteChat" asp-route-id="@chatMessage.ChatMessageId">Delete</a>
             </div>
             }
             else

@@ -49,6 +49,7 @@ namespace SoundBase.Controllers
         }
 
         // GET: Projects/Chat/5
+        [Authorize]
         public async Task<IActionResult> Chat(int id)
         {
 
@@ -63,8 +64,24 @@ namespace SoundBase.Controllers
             viewproject.Project = await _context.Project
                 .Include(p => p.Creator)
                 .Include(p => p.ChatMessages)
+                .Include(p => p.ProjectUsers)
                 .ThenInclude(cm => cm.User)
                 .FirstOrDefaultAsync(m => m.ProjectId == id);
+
+            bool isAuth = false;
+
+            foreach (ProjectUser projectUser in viewproject.Project.ProjectUsers)
+            {
+                if (projectUser.UserId == user.Id)
+                {
+                    isAuth = true;
+                }
+            }
+
+            if (isAuth == false)
+            {
+                return RedirectToAction("Index");
+            }
 
             viewproject.Project.ChatMessages = viewproject.Project.ChatMessages.OrderBy(cm => cm.DatePosted).ToList();
 
@@ -115,7 +132,23 @@ namespace SoundBase.Controllers
             return View(viewproject);
         }
 
+        [Authorize]
+        public async Task<IActionResult> DeleteChat(int id)
+        {
+            var user = await GetCurrentUserAsync();
+            var chatMessage = await _context.ChatMessage.FirstOrDefaultAsync(c => c.ChatMessageId == id);
+
+            if (user.Id == chatMessage.UserId)
+            {
+                _context.ChatMessage.Remove(chatMessage);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Chat", new { id = chatMessage.ProjectId });
+        }
+
         // GET: Projects/Create
+        [Authorize]
         public IActionResult Create()
         {
             ProjectCreateViewModel viewproject = new ProjectCreateViewModel();
@@ -138,17 +171,6 @@ namespace SoundBase.Controllers
             var user = await GetCurrentUserAsync();
             viewproject.Project.CreatorId = user.Id;
 
-            if (viewproject.MemberRoleId == 0)
-            {
-                ViewBag.Message = string.Format("Please select your role");
-
-                ProjectCreateViewModel newviewproject = new ProjectCreateViewModel();
-                viewproject.Project = new Project();
-                ViewData["MemberRoleId"] = new SelectList(_context.MemberRole, "MemberRoleId", "Title");
-                ViewData["CreatorId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
-                return View(newviewproject);
-            }
-
             if (ModelState.IsValid)
             {
                 if (viewproject.ImageFile != null)
@@ -169,7 +191,7 @@ namespace SoundBase.Controllers
                 var initialUser = new ProjectUser();
                 initialUser.UserId = user.Id;
                 initialUser.ProjectId = viewproject.Project.ProjectId;
-                initialUser.MemberRoleId = viewproject.MemberRoleId;
+                initialUser.MemberRoleId = 1;
                 initialUser.IsAdmin = true;
                 initialUser.DateAdded = DateTime.Now;
 
@@ -186,6 +208,7 @@ namespace SoundBase.Controllers
         }
 
         // GET: Projects/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int id)
         {
             var project = await _context.Project.FindAsync(id);
@@ -238,9 +261,26 @@ namespace SoundBase.Controllers
             return RedirectToAction("Edit", new { id = project.ProjectId });
         }
 
+        [Authorize]
         public async Task<IActionResult> Info(int id)
         {
-            var project = await _context.Project.Include(p => p.ProjectUsers).Include(p => p.Creator).FirstOrDefaultAsync(m => m.ProjectId == id);
+            var user = await GetCurrentUserAsync();
+            var project = await _context.Project.Include(p => p.ProjectUsers).Include(p => p.ProjectUsers).Include(p => p.Creator).FirstOrDefaultAsync(m => m.ProjectId == id);
+
+            bool isAuth = false;
+
+            foreach (ProjectUser projectUser in project.ProjectUsers)
+            {
+                if (projectUser.UserId == user.Id)
+                {
+                    isAuth = true;
+                }
+            }
+
+            if (isAuth == false)
+            {
+                return RedirectToAction("Index");
+            }
 
             ViewBag.PageTitle = "Info";
             ViewBag.ArtistName = project.ArtistName;
@@ -257,6 +297,7 @@ namespace SoundBase.Controllers
             return View(project);
         }
 
+        [Authorize]
         public async Task<IActionResult> Members(int id)
         {
             var project = await _context.Project
@@ -266,6 +307,23 @@ namespace SoundBase.Controllers
                 .Include(p => p.ProjectUsers)
                 .ThenInclude(pu => pu.User)
                 .FirstOrDefaultAsync(p => p.ProjectId == id);
+
+            bool isAuth = false;
+
+            var user = await GetCurrentUserAsync();
+
+            foreach (ProjectUser projectUser in project.ProjectUsers)
+            {
+                if (projectUser.UserId == user.Id)
+                {
+                    isAuth = true;
+                }
+            }
+
+            if (isAuth == false)
+            {
+                return RedirectToAction("Index");
+            }
 
             ViewBag.ProjectId = id;
             ViewBag.ArtistName = project.ArtistName;
@@ -277,12 +335,30 @@ namespace SoundBase.Controllers
             return View(project);
         }
 
+        [Authorize]
         public async Task<IActionResult> Tracks(int id)
         {
-            var project = await _context.Project
+            var project = await _context.Project.Include(p => p.ProjectUsers)
                 .FirstOrDefaultAsync(p => p.ProjectId == id);
 
-            var tracks = _context.Track.Include(t => t.Project).Include(t => t.User).Where(t => t.ProjectId == id).ToList();
+            var user = await GetCurrentUserAsync();
+
+            bool isAuth = false;
+
+            foreach (ProjectUser projectUser in project.ProjectUsers)
+            {
+                if (projectUser.UserId == user.Id)
+                {
+                    isAuth = true;
+                }
+            }
+
+            if (isAuth == false)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var tracks = _context.Track.Include(t => t.Project).Include(t => t.User).Where(t => t.ProjectId == id).OrderByDescending(t => t.DateUploaded).ToList();
 
             ViewBag.ProjectId = id;
             ViewBag.ArtistName = project.ArtistName;
@@ -290,14 +366,48 @@ namespace SoundBase.Controllers
             ViewBag.ImagePath = project.ImagePath;
             ViewBag.PageTitle = "Tracks";
             ViewBag.IsProjectOwner = await IsProjectOwnerAsync(id);
+            ViewBag.UserId = user.Id;
 
             return View(tracks);
         }
 
+        [Authorize]
+        public async Task<IActionResult> DeleteTrack(int id)
+        {
+            var user = await GetCurrentUserAsync();
+            var track = await _context.Track.FirstOrDefaultAsync(t => t.TrackId == id);
+
+            if (user.Id == track.UserId)
+            {
+                _context.Track.Remove(track);
+                await _context.SaveChangesAsync();
+            }
+
+            return RedirectToAction("Tracks", new { id = track.ProjectId });
+        }
+
+        [Authorize]
         public async Task<IActionResult> UploadTrack(int id)
         {
-            var project = await _context.Project
+
+            var user = await GetCurrentUserAsync();
+            var project = await _context.Project.Include(p => p.ProjectUsers)
                 .FirstOrDefaultAsync(p => p.ProjectId == id);
+
+            bool isAuth = false;
+
+            foreach (ProjectUser projectUser in project.ProjectUsers)
+            {
+                if (projectUser.UserId == user.Id)
+                {
+                    isAuth = true;
+                }
+            }
+
+            if (isAuth == false)
+            {
+                return RedirectToAction("Index");
+            }
 
             ViewBag.ProjectId = id;
             ViewBag.ArtistName = project.ArtistName;
@@ -338,6 +448,7 @@ namespace SoundBase.Controllers
             return RedirectToAction("Tracks", new { id = viewmodel.Track.ProjectId });
         }
 
+        [Authorize]
         public async Task<IActionResult> InviteMembers(int id)
         {
 
@@ -346,6 +457,23 @@ namespace SoundBase.Controllers
                 .Include(p => p.ProjectUsers)
                 .ThenInclude(pu => pu.User)
                 .FirstOrDefaultAsync(p => p.ProjectId == id);
+
+            var userToCheck = await GetCurrentUserAsync();
+
+            bool isAuth = false;
+
+            foreach (ProjectUser projectUser in project.ProjectUsers)
+            {
+                if (projectUser.UserId == userToCheck.Id)
+                {
+                    isAuth = true;
+                }
+            }
+
+            if (isAuth == false)
+            {
+                return RedirectToAction("Index");
+            }
 
             var users = _context.ApplicationUsers.Include(u => u.ProjectUsers).Include(u => u.ProjectInvitesReceived).ToList();
 

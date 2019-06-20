@@ -12,9 +12,5 @@ namespace SoundBase.Models
         public Project Project { get; set; }
 
         public IFormFile ImageFile { get; set; }
-
-        [Required(ErrorMessage = "Please select your role")]
-        [Display(Name = "Your role")]
-        public int MemberRoleId { get; set; }
     }
 }

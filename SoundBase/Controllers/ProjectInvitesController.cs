@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -26,6 +27,7 @@ namespace SoundBase.Controllers
         private Task<ApplicationUser> GetCurrentUserAsync() => _userManager.GetUserAsync(HttpContext.User);
 
         // GET: ProjectInvites
+        [Authorize]
         public async Task<IActionResult> Index()
         {
             var user = await GetCurrentUserAsync();
@@ -35,6 +37,7 @@ namespace SoundBase.Controllers
         }
 
         // GET: ProjectInvites/Details/5
+        [Authorize]
         public async Task<IActionResult> Details(int? id)
         {
             if (id == null)
@@ -56,6 +59,7 @@ namespace SoundBase.Controllers
         }
 
         // GET: ProjectInvites/Create
+        [Authorize]
         public IActionResult Create()
         {
             ViewData["ProjectId"] = new SelectList(_context.Project, "ProjectId", "ArtistName");
@@ -84,6 +88,7 @@ namespace SoundBase.Controllers
         }
 
         // GET: ProjectInvites/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -141,6 +146,7 @@ namespace SoundBase.Controllers
         }
 
         // GET: ProjectInvites/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -186,9 +192,10 @@ namespace SoundBase.Controllers
             _context.Add(projectUser);
             _context.ProjectInvite.Remove(projectInvite);
             await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
+            return RedirectToAction("Chat", "Projects", new { id = projectInvite.ProjectId });
         }
 
+        [Authorize]
         public async Task<IActionResult> DeclineInvite(int id)
         {
             var projectInvite = await _context.ProjectInvite.FindAsync(id);
