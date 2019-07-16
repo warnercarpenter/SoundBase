@@ -217,21 +217,6 @@ namespace SoundBase.Migrations
                     b.ToTable("ChatMessage");
                 });
 
-            modelBuilder.Entity("SoundBase.Models.MemberRole", b =>
-                {
-                    b.Property<int>("MemberRoleId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Title")
-                        .IsRequired()
-                        .HasMaxLength(55);
-
-                    b.HasKey("MemberRoleId");
-
-                    b.ToTable("MemberRole");
-                });
-
             modelBuilder.Entity("SoundBase.Models.Project", b =>
                 {
                     b.Property<int>("ProjectId")
@@ -311,16 +296,12 @@ namespace SoundBase.Migrations
 
                     b.Property<bool>("IsAdmin");
 
-                    b.Property<int>("MemberRoleId");
-
                     b.Property<int>("ProjectId");
 
                     b.Property<string>("UserId")
                         .IsRequired();
 
                     b.HasKey("ProjectUserId");
-
-                    b.HasIndex("MemberRoleId");
 
                     b.HasIndex("ProjectId");
 
@@ -360,35 +341,6 @@ namespace SoundBase.Migrations
                     b.HasIndex("UserId");
 
                     b.ToTable("Track");
-                });
-
-            modelBuilder.Entity("SoundBase.Models.TrackNote", b =>
-                {
-                    b.Property<int>("TrackNoteId")
-                        .ValueGeneratedOnAdd()
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Content")
-                        .IsRequired();
-
-                    b.Property<DateTime>("DatePosted")
-                        .ValueGeneratedOnAddOrUpdate()
-                        .HasDefaultValueSql("GETDATE()");
-
-                    b.Property<int?>("Millisecond");
-
-                    b.Property<int>("TrackId");
-
-                    b.Property<string>("UserId")
-                        .IsRequired();
-
-                    b.HasKey("TrackNoteId");
-
-                    b.HasIndex("TrackId");
-
-                    b.HasIndex("UserId");
-
-                    b.ToTable("TrackNote");
                 });
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRoleClaim<string>", b =>
@@ -477,11 +429,6 @@ namespace SoundBase.Migrations
 
             modelBuilder.Entity("SoundBase.Models.ProjectUser", b =>
                 {
-                    b.HasOne("SoundBase.Models.MemberRole", "MemberRole")
-                        .WithMany("ProjectUsers")
-                        .HasForeignKey("MemberRoleId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
                     b.HasOne("SoundBase.Models.Project", "Project")
                         .WithMany("ProjectUsers")
                         .HasForeignKey("ProjectId")
@@ -502,19 +449,6 @@ namespace SoundBase.Migrations
 
                     b.HasOne("SoundBase.Models.ApplicationUser", "User")
                         .WithMany("Tracks")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade);
-                });
-
-            modelBuilder.Entity("SoundBase.Models.TrackNote", b =>
-                {
-                    b.HasOne("SoundBase.Models.Track", "Track")
-                        .WithMany()
-                        .HasForeignKey("TrackId")
-                        .OnDelete(DeleteBehavior.Cascade);
-
-                    b.HasOne("SoundBase.Models.ApplicationUser", "User")
-                        .WithMany("TrackNotes")
                         .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade);
                 });

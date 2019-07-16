@@ -30,10 +30,5 @@ namespace SoundBase.Models
 
         [Required]
         public bool IsAdmin { get; set; }
-
-        [Required]
-        public int MemberRoleId { get; set; }
-
-        public MemberRole MemberRole { get; set; }
     }
 }

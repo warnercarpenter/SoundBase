@@ -187,7 +187,6 @@ namespace SoundBase.Controllers
             projectUser.UserId = projectInvite.ReceiverId;
             projectUser.ProjectId = projectInvite.ProjectId;
             projectUser.IsAdmin = false;
-            projectUser.MemberRoleId = 2;
 
             _context.Add(projectUser);
             _context.ProjectInvite.Remove(projectInvite);

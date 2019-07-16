@@ -21,8 +21,6 @@ namespace SoundBase.Models
         [Display(Name = "Last Name")]
         public string LastName { get; set; }
 
-        public virtual ICollection<TrackNote> TrackNotes { get; set; }
-
         public virtual ICollection<ChatMessage> ChatMessages { get; set; }
 
         public virtual ICollection<Project> ProjectsCreated { get; set; }

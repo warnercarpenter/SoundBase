@@ -153,7 +153,6 @@ namespace SoundBase.Controllers
         {
             ProjectCreateViewModel viewproject = new ProjectCreateViewModel();
             viewproject.Project = new Project();
-            ViewData["MemberRoleId"] = new SelectList(_context.MemberRole, "MemberRoleId", "Title");
             ViewData["CreatorId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View(viewproject);
         }
@@ -191,7 +190,6 @@ namespace SoundBase.Controllers
                 var initialUser = new ProjectUser();
                 initialUser.UserId = user.Id;
                 initialUser.ProjectId = viewproject.Project.ProjectId;
-                initialUser.MemberRoleId = 1;
                 initialUser.IsAdmin = true;
                 initialUser.DateAdded = DateTime.Now;
 
@@ -202,7 +200,6 @@ namespace SoundBase.Controllers
             }
             viewproject = new ProjectCreateViewModel();
             viewproject.Project = new Project();
-            ViewData["MemberRoleId"] = new SelectList(_context.MemberRole, "MemberRoleId", "Title");
             ViewData["CreatorId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View(viewproject);
         }
@@ -302,8 +299,6 @@ namespace SoundBase.Controllers
         {
             var project = await _context.Project
                 .Include(p => p.Creator)
-                .Include(p => p.ProjectUsers)
-                .ThenInclude(pu => pu.MemberRole)
                 .Include(p => p.ProjectUsers)
                 .ThenInclude(pu => pu.User)
                 .FirstOrDefaultAsync(p => p.ProjectId == id);

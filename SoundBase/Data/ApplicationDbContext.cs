@@ -18,9 +18,7 @@ namespace SoundBase.Data
         public DbSet<Project> Project { get; set; }
         public DbSet<ProjectInvite> ProjectInvite { get; set; }
         public DbSet<ProjectUser> ProjectUser { get; set; }
-        public DbSet<MemberRole> MemberRole { get; set; }
         public DbSet<Track> Track { get; set; }
-        public DbSet<TrackNote> TrackNote { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
@@ -34,10 +32,6 @@ namespace SoundBase.Data
 
             modelBuilder.Entity<Track>()
                 .Property(b => b.DateUploaded)
-                .HasDefaultValueSql("GETDATE()");
-
-            modelBuilder.Entity<TrackNote>()
-                .Property(b => b.DatePosted)
                 .HasDefaultValueSql("GETDATE()");
 
             modelBuilder.Entity<ProjectInvite>()

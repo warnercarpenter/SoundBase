@@ -12,31 +12,43 @@
     <partial name="_ProjectTopBar" />
     <div class="projectInnerContainer">
         <div id="messageContainer" class="messageContainer">
-            @foreach (ChatMessage chatMessage in Model.Project.ChatMessages)
+            @if (Model.Project.ChatMessages.Count == 0)
             {
-            if (chatMessage.UserId == ViewBag.UserId)
-            {
-            <div class="chatBubble fromCurrentUser">
-                <div class="chatBubbleContent">
-                    @chatMessage.Content
+                <div class="noneFound">
+                    <div class="noneFoundContents">
+                        <i class="far fa-meh-blank fa-10x"></i><br />
+                        <div style="margin-top: 6px">Sorry, no one has posted a message</div>
+                    </div>
                 </div>
-                <div class="chatBubbleName">
-                    @chatMessage.User.FirstName @chatMessage.User.LastName <br /> <span class="chatBubbleDate">@chatMessage.DatePosted.ToString("MMMM d, hh:mm tt")</span>
-                </div><br/>
-                <a class="deleteChat" asp-action="DeleteChat" asp-route-id="@chatMessage.ChatMessageId">Delete</a>
-            </div>
             }
             else
             {
-            <div class="chatBubble">
-                <div class="chatBubbleContent">
-                    @chatMessage.Content
-                </div>
-                <div class="chatBubbleName">
-                    @chatMessage.User.FirstName @chatMessage.User.LastName <br /> <span class="chatBubbleDate">@chatMessage.DatePosted.ToString("MMMM d, hh:mm tt")</span>
-                </div>
-            </div>
-            }
+                @foreach (ChatMessage chatMessage in Model.Project.ChatMessages)
+                {
+                    if (chatMessage.UserId == ViewBag.UserId)
+                    {
+                        <div class="chatBubble fromCurrentUser">
+                            <div class="chatBubbleContent">
+                                @chatMessage.Content
+                            </div>
+                            <div class="chatBubbleName">
+                                @chatMessage.User.FirstName @chatMessage.User.LastName <br /> <span class="chatBubbleDate">@chatMessage.DatePosted.ToString("MMMM d, hh:mm tt")</span>
+                            </div><br />
+                            <a class="deleteChat" asp-action="DeleteChat" asp-route-id="@chatMessage.ChatMessageId">Delete</a>
+                        </div>
+                    }
+                    else
+                    {
+                        <div class="chatBubble">
+                            <div class="chatBubbleContent">
+                                @chatMessage.Content
+                            </div>
+                            <div class="chatBubbleName">
+                                @chatMessage.User.FirstName @chatMessage.User.LastName <br /> <span class="chatBubbleDate">@chatMessage.DatePosted.ToString("MMMM d, hh:mm tt")</span>
+                            </div>
+                        </div>
+                    }
+                }
             }
         </div>
         <div class="messageInputContainer">

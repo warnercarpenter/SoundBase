@@ -22,7 +22,14 @@
                         }
                     </div>
                     <div class="memberCardRole">
-                        @projectUser.MemberRole.Title
+                        @if (projectUser.IsAdmin)
+                        {
+                            <span>Admin</span>
+                        }
+                        else
+                        {
+                            <span>Member</span>
+                        }
                     </div>
                     <div class="memberCardRole" style="font-size: .8em">
                         Added on @projectUser.DateAdded.ToString("MMMM d, hh:mm tt")

@@ -146,6 +146,7 @@ a {
     flex-direction: column;
     justify-content: center;
     color: white;
+    transition: 0.25s;
 }
 
 .projectTopBarContents {
@@ -361,6 +362,10 @@ a {
     .cardBgHover:hover {
         background-color: white !important;
         color: var(--purple-dark);
+    }
+
+    .cardBgHover:hover .projectTopBarArtistName {
+        border-color: var(--purple-dark);
     }
 
     .inviteCard .projectTopBarArtistName {
