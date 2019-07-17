@@ -153,6 +153,7 @@ namespace SoundBase.Controllers
         {
             ProjectCreateViewModel viewproject = new ProjectCreateViewModel();
             viewproject.Project = new Project();
+            ViewBag.Error = TempData["error"];
             ViewData["CreatorId"] = new SelectList(_context.ApplicationUsers, "Id", "Id");
             return View(viewproject);
         }
@@ -175,6 +176,13 @@ namespace SoundBase.Controllers
                 if (viewproject.ImageFile != null)
                 {
                     var fileName = Path.GetFileName(viewproject.ImageFile.FileName);
+
+                    if (Path.GetExtension(fileName).ToLower() != ".jpg" && Path.GetExtension(fileName).ToLower() != ".jpeg" && Path.GetExtension(fileName).ToLower() != ".png")
+                    {
+                        TempData["error"] = true;
+                        return RedirectToAction("Create");
+                    }
+
                     Path.GetTempFileName();
                     var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
                     using (var stream = new FileStream(filePath, FileMode.Create))
@@ -229,6 +237,7 @@ namespace SoundBase.Controllers
             ViewBag.ImagePath = viewproject.Project.ImagePath;
             ViewBag.ProjectId = id;
             ViewBag.IsProjectOwner = await IsProjectOwnerAsync(id);
+            ViewBag.Error = TempData["error"];
 
             ViewBag.PageTitle = "Edit";
             ViewData["CreatorId"] = new SelectList(_context.ApplicationUsers, "Id", "Id", project.CreatorId);
@@ -244,7 +253,26 @@ namespace SoundBase.Controllers
         {
             var project = viewproject.Project;
 
-            if (project.ImagePath == null)
+            if (viewproject.ImageFile != null)
+            {
+                var fileName = Path.GetFileName(viewproject.ImageFile.FileName);
+
+                if (Path.GetExtension(fileName).ToLower() != ".jpg" && Path.GetExtension(fileName).ToLower() != ".jpeg" && Path.GetExtension(fileName).ToLower() != ".png")
+                {
+                    TempData["error"] = true;
+                    return RedirectToAction("Edit", new { id = viewproject.Project.ProjectId });
+                }
+
+                Path.GetTempFileName();
+                var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\images", fileName);
+                using (var stream = new FileStream(filePath, FileMode.Create))
+                {
+                    await viewproject.ImageFile.CopyToAsync(stream);
+                }
+
+                viewproject.Project.ImagePath = viewproject.ImageFile.FileName;
+            }
+            else
             {
                 project.ImagePath = viewproject.ImagePath;
             }
@@ -404,6 +432,7 @@ namespace SoundBase.Controllers
                 return RedirectToAction("Index");
             }
 
+            ViewBag.Error = TempData["error"];
             ViewBag.ProjectId = id;
             ViewBag.ArtistName = project.ArtistName;
             ViewBag.ProjectTitle = project.Title;
@@ -428,6 +457,13 @@ namespace SoundBase.Controllers
             var user = await GetCurrentUserAsync();
 
             var fileName = Path.GetFileName(viewmodel.AudioFile.FileName);
+
+            if (Path.GetExtension(fileName).ToLower() != ".mp3")
+            {
+                TempData["error"] = true;
+                return RedirectToAction("UploadTrack", new { id = viewmodel.Track.ProjectId });
+            }
+
             Path.GetTempFileName();
             var filePath = Path.Combine(Directory.GetCurrentDirectory(), "wwwroot\\audio", fileName);
             using (var stream = new FileStream(filePath, FileMode.Create))

@@ -9,36 +9,40 @@
         <form asp-action="Create" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <div class="header">Create Project</div>
-            <div class="editFormBackground">
-                <div class="editFormGroup">
-                    <input type="hidden" asp-for="Project.CreatorId" asp-items="ViewBag.UserId" />
+                <div class="editFormBackground">
+                    @if (ViewBag.Error == true)
+                    {
+                        <div style="color: white; font-weight: bold">Error! Cover Image must be a .jpg or .png file!</div>
+                    }
+                    <div class="editFormGroup">
+                        <input type="hidden" asp-for="Project.CreatorId" asp-items="ViewBag.UserId" />
+                    </div>
+                    <div class="editFormGroup">
+                        <label asp-for="Project.ArtistName" class="categoryTitle">Artist Name</label><br />
+                        <input class="editInput" asp-for="Project.ArtistName" />
+                        <span asp-validation-for="Project.ArtistName" class="text-danger"></span>
+                    </div>
+                    <div class="editFormGroup">
+                        <label asp-for="Project.Title" class="categoryTitle"></label><br />
+                        <input class="editInput" asp-for="Project.Title" />
+                        <span asp-validation-for="Project.Title" class="text-danger"></span>
+                    </div>
+                    <div class="editFormGroup">
+                        <label asp-for="Project.Description" class="categoryTitle"></label><br />
+                        @Html.TextArea("Project.Description", new { rows = 4, cols = 30 })
+                        <span asp-validation-for="Project.Description" class="text-danger"></span>
+                    </div>
+                    <div class="editFormGroup">
+                        <label for="imageUpload" class="categoryTitle">
+                            Cover Image (Must be a .jpg or .png file)<br />
+                            <div class="uploadButton">
+                                Choose File
+                            </div>
+                        </label><br />
+                        <input id="imageUpload" asp-for="ImageFile" class="inputFile" type="file" />
+                        <span asp-validation-for="ImageFile" class="text-danger"></span>
+                    </div>
                 </div>
-                <div class="editFormGroup">
-                    <label asp-for="Project.ArtistName" class="categoryTitle">Artist Name</label><br />
-                    <input class="editInput" asp-for="Project.ArtistName" />
-                    <span asp-validation-for="Project.ArtistName" class="text-danger"></span>
-                </div>
-                <div class="editFormGroup">
-                    <label asp-for="Project.Title" class="categoryTitle"></label><br />
-                    <input class="editInput" asp-for="Project.Title" />
-                    <span asp-validation-for="Project.Title" class="text-danger"></span>
-                </div>
-                <div class="editFormGroup">
-                    <label asp-for="Project.Description" class="categoryTitle"></label><br />
-                    @Html.TextArea("Project.Description", new { rows = 4, cols = 40 })
-                    <span asp-validation-for="Project.Description" class="text-danger"></span>
-                </div>
-                <div class="editFormGroup">
-                    <label for="imageUpload" class="categoryTitle">
-                        Cover Image<br />
-                        <div class="uploadButton">
-                            Choose File
-                        </div>
-                    </label><br />
-                    <input id="imageUpload" asp-for="ImageFile" class="inputFile" type="file" />
-                    <span asp-validation-for="ImageFile" class="text-danger"></span>
-                </div>
-            </div>
             <div class="editFormGroup">
                 <button type="submit" class="editSaveButton">Submit</button>
             </div>

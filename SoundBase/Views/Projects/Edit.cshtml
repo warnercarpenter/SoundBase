@@ -9,7 +9,7 @@
 <div class="projectContainer">
     <partial name="_ProjectTopBar" />
     <div class="editContainer">
-        <form asp-action="Edit">
+        <form asp-action="Edit" enctype="multipart/form-data">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Project.ProjectId" />
             <input type="hidden" asp-for="Project.DateCreated" />
@@ -17,6 +17,10 @@
             <input type="hidden" asp-for="ImagePath" />
 
             <div class="editFormBackground">
+                @if (ViewBag.Error == true)
+                {
+                    <div style="color: white; font-weight: bold">Error! Cover Image must be a .jpg or .png file!</div>
+                }
                 <div class="editFormGroup">
                     <label class="categoryTitle">Edit Artist</label><br />
                     <input asp-for="Project.ArtistName" class="editInput" />
@@ -29,18 +33,18 @@
                 </div>
                 <div class="editFormGroup">
                     <label class="categoryTitle">Edit Description</label><br />
-                    @Html.TextArea("Project.Description", new { rows = 4, cols = 40 })
+                    @Html.TextArea("Project.Description", new { rows = 4, cols = 30 })
                     <span asp-validation-for="Project.Description" class="text-danger"></span>
                 </div>
                 <div class="editFormGroup">
                     <label for="imageUpload" class="categoryTitle">
-                        Edit Cover Image<br />
+                        Edit Cover Image (Must be a .jpg or .png file)<br />
                         <div class="uploadButton">
                             Choose File
                         </div>
                     </label><br />
-                    <input id="imageUpload" asp-for="Project.ImagePath" class="inputFile" type="file" />
-                    <span asp-validation-for="Project.ImagePath" class="text-danger"></span>
+                    <input id="imageUpload" asp-for="ImageFile" class="inputFile" type="file" />
+                    <span asp-validation-for="ImageFile" class="text-danger"></span>
                 </div>
             </div>
             <div class="editFormGroup">

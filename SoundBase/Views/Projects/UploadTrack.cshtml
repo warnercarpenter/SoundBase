@@ -10,6 +10,10 @@
     <div class="editContainer">
         <form asp-action="UploadTrack" enctype="multipart/form-data">
             <div class="editFormBackground">
+                @if (ViewBag.Error == true)
+                {
+                    <div style="color: white; font-weight: bold">Error! File must be of type .mp3!</div>
+                }
                 <div asp-validation-summary="ModelOnly" class="text-danger"></div>
                 <input type="hidden" asp-for="Track.ProjectId" />
                 <div class="editFormGroup">
@@ -19,7 +23,7 @@
                 </div>
                 <div class="editFormGroup">
                     <label for="trackUpload" class="categoryTitle">
-                        Upload Track<br />
+                        Upload Track (Must be an .mp3 file)<br />
                         <div class="uploadButton">
                             Choose File
                         </div>
